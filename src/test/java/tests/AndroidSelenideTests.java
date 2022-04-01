@@ -12,48 +12,46 @@ import static io.qameta.allure.Allure.step;
 public class AndroidSelenideTests extends TestBase {
 
     @Test
-    void searchTest() {
-        step("Click skip", () ->
-                $(AppiumBy.id("org.wikipedia.alpha:id/fragment_onboarding_skip_button")).click());
-        step("Type search", () -> {
-            $(AppiumBy.accessibilityId("Search Wikipedia")).click();
-            $(AppiumBy.id("org.wikipedia.alpha:id/search_src_text")).setValue("BrowserStack");
-        });
-        step("Verify content found", () ->
-                $$(AppiumBy.className("android.widget.TextView")).shouldHave(sizeGreaterThan(0)));
-    }
-
-    @Test
     void gettingStartedTest() {
         step("Check first screen", () -> {
-                $(AppiumBy.id("org.wikipedia.alpha:id/primaryTextView"))
-                        .shouldHave(text("The Free Encyclopedia …in over 300 languages"));
-        $(AppiumBy.id("org.wikipedia.alpha:id/view_onboarding_page_indicator"))
-                        .shouldHave(attribute("content-desc", "Page 1 of 4"));
+            $(AppiumBy.id("org.wikipedia.alpha:id/primaryTextView")).shouldHave(text("Free Encyclopedia"));
         });
 
-        step("Switch to second screen and check it", () -> {
-            $(AppiumBy.id("org.wikipedia.alpha:id/fragment_onboarding_forward_button")).click();
-            $(AppiumBy.id("org.wikipedia.alpha:id/view_onboarding_page_indicator"))
-                    .shouldHave(attribute("content-desc", "Page 2 of 4"));
-            $(AppiumBy.id("org.wikipedia.alpha:id/primaryTextView"))
-                    .shouldHave(text("New ways to explore"));
+        step("Set russian language", () -> {
+            $(AppiumBy.id("org.wikipedia.alpha:id/addLangContainer")).click();
+            $(AppiumBy.xpath("//*[@text='ADD LANGUAGE']")).click();
+            $(AppiumBy.xpath(("//*[@text='Русский']"))).click();
+            $(AppiumBy.xpath(("//*[@content-desc='Navigate up']"))).click();
         });
 
-        step("Switch to third screen and check it", () -> {
-            $(AppiumBy.id("org.wikipedia.alpha:id/fragment_onboarding_forward_button")).click();
-            $(AppiumBy.id("org.wikipedia.alpha:id/primaryTextView"))
-                    .shouldHave(text("Reading lists with sync"));
-            $(AppiumBy.id("org.wikipedia.alpha:id/view_onboarding_page_indicator"))
-                    .shouldHave(attribute("content-desc", "Page 3 of 4"));
+        step("Check russian language", () -> {
+            $(AppiumBy.xpath(("//*[contains(@text,'Русский')]"))).shouldHave(text("Русский"));
         });
 
-        step("Switch to Fourth screen and check it", () -> {
-            $(AppiumBy.id("org.wikipedia.alpha:id/fragment_onboarding_forward_button")).click();
-            $(AppiumBy.id("org.wikipedia.alpha:id/fragment_onboarding_done_button"))
-                    .shouldBe(visible);
-            $(AppiumBy.id("org.wikipedia.alpha:id/view_onboarding_page_indicator"))
-                    .shouldHave(attribute("content-desc", "Page 4 of 4"));
+        step("Go to second screen", () -> {
+            $(AppiumBy.xpath(("//*[@text='CONTINUE']"))).click();
+        });
+
+        step("Check second screen", () -> {
+            $(AppiumBy.id("org.wikipedia.alpha:id/secondaryTextView")).shouldHave(text("Customize the feed to your interests"));
+        });
+
+        step("Go to third screen", () -> {
+            $(AppiumBy.xpath(("//*[@text='CONTINUE']"))).click();
+        });
+
+        step("Check third screen", () -> {
+            $(AppiumBy.id("org.wikipedia.alpha:id/secondaryTextView")).shouldHave(text("Login to your Wikipedia account"));
+        });
+
+        step("Go to fourth screen", () -> {
+            $(AppiumBy.xpath(("//*[@text='CONTINUE']"))).click();
+        });
+
+        step("Check fourth screen", () -> {
+            $(AppiumBy.id("org.wikipedia.alpha:id/secondaryTextView")).shouldHave(text("Learn more"));
+
         });
     }
+
 }
